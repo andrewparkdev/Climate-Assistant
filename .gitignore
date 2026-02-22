@@ -1,0 +1,22 @@
+# Environment variables (contains API keys)
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Observable Framework cache and build
+src/.observablehq/cache/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/

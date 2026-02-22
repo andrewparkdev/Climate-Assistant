@@ -118,7 +118,10 @@ ${categoryDisplay}
             margin: {top: 30, right: 120, bottom: 20, left: 80}
           });
         } catch (error) {
-          return html`<div class="error">Error rendering tree: ${error.message}</div>`;
+          const msg = document.createElement("div");
+          msg.className = "error";
+          msg.textContent = "Error rendering tree: " + error.message;
+          return msg;
         }
       })}
     </div>
@@ -134,7 +137,10 @@ ${categoryDisplay}
         const sunburstData = transformDataForSunburst(categories_label, subcategories_label, solutions);
         return ZoomableSunburst(sunburstData, {width: width, height: 600});
       } catch (error) {
-        return html`<div class="error">Error rendering sunburst: ${error.message}</div>`;
+        const msg = document.createElement("div");
+        msg.className = "error";
+        msg.textContent = "Error rendering sunburst: " + error.message;
+        return msg;
       }
     })}
   </div>
@@ -149,7 +155,10 @@ ${categoryDisplay}
         const icicleData = transformDataForIcicle(categories_label, subcategories_label, solutions);
         return ZoomableIcicle(icicleData, {width: width, height: 500});
       } catch (error) {
-        return html`<div class="error">Error rendering icicle: ${error.message}</div>`;
+        const msg = document.createElement("div");
+        msg.className = "error";
+        msg.textContent = "Error rendering icicle: " + error.message;
+        return msg;
       }
     })}
   </div>
@@ -302,7 +311,7 @@ const x = {domain: [start, end]};
           title: "Top issues"
         },
         format: {
-          title: (d) => html`<a href=https://github.com/observablehq/plot/issues/${d.number} target=_blank>${d.title}</a>`
+          title: (d) => html`<a href="https://github.com/observablehq/plot/issues/${d.number}" target="_blank">${d.title}</a>`
         }
       }
     )}
