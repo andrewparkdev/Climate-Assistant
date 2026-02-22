@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import * as fs from 'fs';
 import { stringify } from 'csv-stringify/sync';
 import path from 'path';
+import { fileURLToPath } from 'node:url';
 
 // Load environment variables first
 dotenv.config();
@@ -53,8 +54,16 @@ export const fetchTableRecords = async (tableName: string): Promise<AirtableReco
 
 export const saveToCSV = (records: AirtableRecord[], filename: string): void => {
   try {
+    // Validate filename to prevent path traversal
+    const resolvedPath = path.resolve(filename);
+    const currentDir = path.dirname(fileURLToPath(import.meta.url));
+    const projectRoot = path.resolve(path.join(currentDir, '../..'));
+    if (!resolvedPath.startsWith(projectRoot)) {
+      throw new Error(`Path traversal detected: filename resolves outside the project directory`);
+    }
+
     // Ensure output directory exists
-    const dir = path.dirname(filename);
+    const dir = path.dirname(resolvedPath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -87,7 +96,7 @@ export const saveToCSV = (records: AirtableRecord[], filename: string): void => 
     });
 
     // Write to file
-    fs.writeFileSync(filename, csv);
+    fs.writeFileSync(resolvedPath, csv);
     console.log(`Data saved to ${filename}`);
   } catch (error) {
     throw new AirtableError(`Error saving to CSV file ${filename}`, error);

@@ -41,11 +41,22 @@ export async function* githubList<T = any>(path: string, {reverse = true, ...opt
 }
 
 function findRelLink(headers, name) {
-  return headers
+  const raw = headers
     .get("link")
     ?.split(/,\s+/g)
     .map((link) => link.split(/;\s+/g))
     .find(([, rel]) => rel === `rel="${name}"`)?.[0]
     .replace(/^</, "")
     .replace(/>$/, "");
+  // Validate that the URL points to the GitHub API to prevent SSRF
+  if (raw) {
+    try {
+      const parsed = new URL(raw);
+      if (parsed.hostname !== "api.github.com") return undefined;
+      if (parsed.protocol !== "https:") return undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  return raw;
 }
