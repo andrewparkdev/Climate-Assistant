@@ -38,10 +38,11 @@
     "typescript": "^5.7.3"
   },
   "overrides": {
-    "tar": "~7.5.10",
+    "tar": "^7.5.21",
     "esbuild": "^0.28.1",
     "rollup": "^4.59.0",
-    "minimatch": "^9.0.7",
-    "js-yaml": "^4.1.2"
+    "minimatch": "^10.0.3",
+    "js-yaml": "^4.2.1",
+    "brace-expansion": "^5.0.8"
   }
 }
